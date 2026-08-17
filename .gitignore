@@ -19,3 +19,7 @@ tarot.db
 # Прочее
 *.log
 .DS_Store
+*.tar.gz
+DEBIAN/
+usr/
+frontend/package.json.md5
