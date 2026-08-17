@@ -1,0 +1,37 @@
+html,
+body,
+#app {
+
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+}
+
+
+body {
+
+    background:
+        radial-gradient(circle at top,
+            #3b2a55 0%,
+            #17121f 45%,
+            #08070d 100%);
+
+    color: #ffffff;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+}
+
+
+#app {
+
+    width: 100%;
+    height: 100%;
+
+}

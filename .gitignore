@@ -1,0 +1,21 @@
+# Сборка
+/build/bin/
+/build/darwin/
+/build/windows/
+/build/linux/
+
+# Node.js
+frontend/node_modules/
+frontend/dist/
+
+# База данных (личные данные, не для репозитория)
+tarot.db
+*.db
+
+# IDE
+.vscode/
+.idea/
+
+# Прочее
+*.log
+.DS_Store
