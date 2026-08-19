@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"log"
 
+	"os"
+	"path/filepath"
+
 	"TarotOracleApp/backend/tarot"
 )
 
@@ -47,9 +50,20 @@ func (a *App) startup(
 
 	// SQLite
 
+	dbPath, err := getDatabasePath()
+
+	if err != nil {
+
+		log.Fatal(
+			"Ошибка определения пути к базе:",
+			err,
+		)
+
+	}
+
 	storage, err :=
 		tarot.NewSQLiteStorage(
-			"tarot.db",
+			dbPath,
 		)
 
 	if err != nil {
@@ -310,5 +324,46 @@ func (a *App) UpdateHistoryComment(
 func (a *App) GetAboutTarot() []tarot.GuideSection {
 
 	return a.service.GetAboutTarot()
+
+}
+
+// getDatabasePath возвращает единый путь к базе данных
+// в домашней папке пользователя — одинаковый независимо
+// от того, откуда запущено приложение (dev или собранное).
+func getDatabasePath() (string, error) {
+
+	home, err :=
+		os.UserHomeDir()
+
+	if err != nil {
+
+		return "", err
+
+	}
+
+	dir :=
+		filepath.Join(
+			home,
+			".local",
+			"share",
+			"tarot-oracle",
+		)
+
+	err =
+		os.MkdirAll(
+			dir,
+			0755,
+		)
+
+	if err != nil {
+
+		return "", err
+
+	}
+
+	return filepath.Join(
+		dir,
+		"tarot.db",
+	), nil
 
 }

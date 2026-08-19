@@ -2809,6 +2809,14 @@ function openHistoryRecord(record) {
     else if (record.type === "spread") {
 
 
+        console.log("record.spreadId:", JSON.stringify(record.spreadId))
+
+        console.log("available keys:", Object.keys(spreadsById))
+
+        console.log("full record:", record)
+
+
+
         const spreadDef =
             spreadsById[record.spreadId]
 
@@ -2821,8 +2829,6 @@ function openHistoryRecord(record) {
             return
 
         }
-
-
 
         const data = {
 

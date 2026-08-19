@@ -60,6 +60,8 @@ CREATE TABLE IF NOT EXISTS history (
 
 	name TEXT,
 
+	spread_id TEXT,
+
 	question TEXT,
 
 	comment TEXT,
@@ -97,6 +99,12 @@ CREATE TABLE IF NOT EXISTS settings (
 		"ALTER TABLE history ADD COLUMN comment TEXT",
 	)
 
+	// Миграция: добавляем колонку spread_id,
+	// если её ещё нет (для существующих баз).
+	_, _ = s.db.Exec(
+		"ALTER TABLE history ADD COLUMN spread_id TEXT",
+	)
+
 	_, err :=
 		s.db.Exec(query)
 
@@ -105,9 +113,8 @@ CREATE TABLE IF NOT EXISTS settings (
 
 // =====================================
 // История
-// =====================================
+// ====================================
 
-// SaveHistory сохраняет запись
 func (s *SQLiteStorage) SaveHistory(
 	record HistoryRecord,
 ) error {
@@ -131,13 +138,14 @@ func (s *SQLiteStorage) SaveHistory(
 				date,
 				type,
 				name,
+				spread_id,
 				question,
 				comment,
 				cards
 			)
 
 			VALUES
-			(?,?,?,?,?,?)
+			(?,?,?,?,?,?,?)
 			`,
 
 			record.Date.Format(
@@ -147,6 +155,8 @@ func (s *SQLiteStorage) SaveHistory(
 			record.Type,
 
 			record.Name,
+
+			record.SpreadID,
 
 			record.Question,
 
@@ -189,6 +199,7 @@ func (s *SQLiteStorage) LoadHistory() (
 				date,
 				type,
 				name,
+				spread_id,
 				question,
 				comment,
 				cards
@@ -219,6 +230,8 @@ func (s *SQLiteStorage) LoadHistory() (
 
 			date string
 
+			spreadID sql.NullString
+
 			comment sql.NullString
 
 			cards string
@@ -234,6 +247,8 @@ func (s *SQLiteStorage) LoadHistory() (
 				&record.Type,
 
 				&record.Name,
+
+				&spreadID,
 
 				&record.Question,
 
@@ -252,6 +267,9 @@ func (s *SQLiteStorage) LoadHistory() (
 				time.RFC3339,
 				date,
 			)
+
+		record.SpreadID =
+			spreadID.String
 
 		record.Comment =
 			comment.String
