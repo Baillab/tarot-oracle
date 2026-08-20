@@ -205,6 +205,8 @@ let appSettings = {
 
     deckMode: "full",
 
+    drawMode: "sequential",
+
     language: "ru",
 
     deckStyle: "classic",
@@ -2966,6 +2968,60 @@ function showSettings() {
 
 
             </div>
+
+            <div class="settings-group">
+
+
+    <div class="settings-group-title">Способ вытягивания</div>
+
+
+
+    <div class="settings-options">
+
+
+        <button
+
+            class="settings-option ${appSettings.drawMode !== "random" ? "active" : ""}"
+
+            data-setting="drawMode"
+
+            data-value="sequential"
+
+        >
+
+            По порядку
+
+        </button>
+
+
+
+        <button
+
+            class="settings-option ${appSettings.drawMode === "random" ? "active" : ""}"
+
+            data-setting="drawMode"
+
+            data-value="random"
+
+        >
+
+            Случайно
+
+        </button>
+
+
+    </div>
+
+
+
+    <p class="settings-hint">
+
+        «По порядку» — карты вытягиваются последовательно из уже перемешанной колоды. «Случайно» — каждая карта выбирается заново из оставшихся.
+
+    </p>
+
+
+</div>
 
 
 

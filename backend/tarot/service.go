@@ -152,7 +152,7 @@ func defaultSettings() map[string]string {
 
 		"deckMode": "full",
 
-		"animationsEnabled": "true",
+		"drawMode": "sequential",
 
 		"language": "ru",
 
@@ -162,6 +162,7 @@ func defaultSettings() map[string]string {
 
 // applyDeckMode пересобирает колоду
 // под выбранный режим (full / major).
+
 func (s *TarotService) applyDeckMode(
 	mode string,
 ) {
@@ -193,6 +194,10 @@ func (s *TarotService) applyDeckMode(
 	s.deck =
 		NewDeck(cards)
 
+	s.deck.SetDrawMode(
+		s.settings["drawMode"],
+	)
+
 }
 
 // =====================================
@@ -208,6 +213,7 @@ func (s *TarotService) GetSettings() map[string]string {
 
 // UpdateSetting сохраняет одну настройку и
 // применяет её эффект (если применимо).
+
 func (s *TarotService) UpdateSetting(
 	key string,
 	value string,
@@ -227,6 +233,12 @@ func (s *TarotService) UpdateSetting(
 	if key == "deckMode" {
 
 		s.applyDeckMode(value)
+
+	}
+
+	if key == "drawMode" {
+
+		s.deck.SetDrawMode(value)
 
 	}
 

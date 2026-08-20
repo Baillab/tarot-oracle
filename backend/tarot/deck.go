@@ -13,6 +13,7 @@ type Deck struct {
 	cards    []Card
 	original []Card
 	rnd      *rand.Rand
+	drawMode string
 }
 
 // NewDeck создает новую колоду.
@@ -49,6 +50,15 @@ func (d *Deck) Shuffle() {
 	)
 }
 
+// SetDrawMode задаёт способ вытягивания карт:
+// "sequential" — по порядку из перемешанной колоды (по умолчанию),
+// "random" — каждый раз случайная карта из оставшихся.
+func (d *Deck) SetDrawMode(mode string) {
+
+	d.drawMode = mode
+
+}
+
 // Draw вытягивает count карт из колоды.
 func (d *Deck) Draw(count int) []DrawnCard {
 
@@ -64,10 +74,29 @@ func (d *Deck) Draw(count int) []DrawnCard {
 
 	for i := 0; i < count; i++ {
 
-		card := d.cards[0]
+		var card Card
 
-		// Удаляем карту из колоды
-		d.cards = d.cards[1:]
+		if d.drawMode == "random" {
+
+			idx :=
+				d.rnd.Intn(len(d.cards))
+
+			card = d.cards[idx]
+
+			d.cards =
+				append(
+					d.cards[:idx],
+					d.cards[idx+1:]...,
+				)
+
+		} else {
+
+			card = d.cards[0]
+
+			// Удаляем карту из колоды
+			d.cards = d.cards[1:]
+
+		}
 
 		isReversed :=
 			d.rnd.Intn(100) < ReverseProbability
